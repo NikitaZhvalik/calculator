@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Бюджет
+        </title>
+        <link rel="stylesheet" href="css/main.css" />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,regular,700" rel="stylesheet" />
+    </head>
+    <body>
+        <header class="header">
+            <div class="header__title">
+                Бюджет за
+                <span id="month" class="header__month">{month}</span>
+                <span id="year">{year}</span>
+            </div>
+            <div class="header__value" id="budget">{value}</div>
+
+            <div class="header__info info-box info-box--income">
+                <div class="info-box__title">Доходы</div>
+                <div class="info-box__right">
+                    <div id="total-income" class="info-box__value">{value}</div>
+                    <div class="info-box__percents"></div>
+                </div>
+            </div>
+            <div class="header__info info-box info-box--expenses">
+                <div class="info-box__title">расходы</div>
+                <div class="info-box__right">
+                    <div id="total-expense" class="info-box__value">{value}</div>
+                    <div id="expense-percents-wrapper" class="info-box__percents">
+                        <div class="badge">{value%}</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Input form -->
+        <div class="form-wrapper">
+            <form class="form" id="form" action="">
+                <select
+                    id="type"
+                    class="form__input form__select"
+                    name="action"
+                    id="action"
+                >
+                    <option value="inc">+</option>
+                    <option value="exp">-</option>
+                </select>
+                <input
+                    id="title"
+                    class="form__input form__input--description"
+                    type="text"
+                    placeholder="Описание"
+                />
+                <input
+                    id="value"
+                    class="form__input form__input--sum"
+                    type="number"
+                    placeholder="Сумма"
+                />
+                <button id="submit" class="form__button">
+                    Добавить
+                    <img
+                        class="form__button-icon"
+                        src="./img/check-square.svg"
+                        alt="icon"
+                    />
+                </button>
+            </form>
+        </div>
+        <!-- // Input form -->
+
+        <!-- Budget table -->
+        <section class="budget-section" id="budget-table">
+            <div class="budget__col">
+                <h2 class="title title--income">Доходы</h2>
+                <ul id="incomes-list" class="budget-list">
+                    <li class="budget-list__item item item--income">
+                        <div class="item__title">Зарплата</div>
+                        <div class="item__right">
+                            <div class="item__amount">+ 2,100.00</div>
+                            <button class="item__remove">
+                                <img
+                                    src="./img/circle-green.svg"
+                                    alt="delete"
+                                />
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="budget__col">
+                <h2 class="title title--expenses">Расходы</h2>
+                <ul id="expenses-list" class="budget-list">
+                    <li class="budget-list__item item item--expense">
+                        <div class="item__title">Зарплата</div>
+                        <div class="item__right">
+                            <div class="item__amount">
+                                - 2,100.00
+                            </div>
+                            <button class="item__remove">
+                                <img src="./img/circle-red.svg" alt="delete" />
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <!-- // Budget table -->
+
+        <!-- Скрипт -->
+        <script src="js/main.js"></script>
+
+    </body>
+</html>
