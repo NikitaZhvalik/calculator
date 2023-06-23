@@ -11,9 +11,35 @@ const value = document.querySelector("#value");
 const incomesList = document.querySelector("#incomes-list");
 const expensesList = document.querySelector("#expenses-list");
 
+//! Function
+function insertTestData() {
+    const testData = [
+        {type: 'inc', title: 'Основная работа', value: 1000,},
+        {type: 'inc', title: 'Подработка', value: 500,},
+        {type: 'inc', title: 'Пассивный доход', value: 250,},
 
+        {type: 'exp', title: 'Квартира', value: 700,},
+        {type: 'exp', title: 'Продукты', value: 300,},
+        {type: 'exp', title: 'Прочее', value: 400,},
+    ];
+    //! рандомный индекс
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max)
+    }
+    const randomIndex = getRandomInt(testData.length);
+    const randomData = testData[randomIndex];
+
+    type.value = randomData.type;
+    title.value = randomData.title;
+    value.value = randomData.value;
+}
+
+function clearForm() {
+    form.reset();
+}
 
 //! Actions
+insertTestData();
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -31,8 +57,6 @@ form.addEventListener("submit", (e) => {
   } else {
     value.classList.remove('form__input--error');
   }
-
-
 
   //! расчет id
   let id = 1;
@@ -87,4 +111,7 @@ form.addEventListener("submit", (e) => {
             </li>`;
     expensesList.insertAdjacentHTML("afterbegin", html);
   }
+  //! чистим form после добавления
+  clearForm();
+  insertTestData();
 });
