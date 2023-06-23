@@ -159,6 +159,11 @@ body {
 .form__input--sum {
 	width: 120px;
 }
+.form__input--error {
+	outline: 3px solid #f74546;
+	outline-offset: 2px;
+	background-color: #ffe4e5;
+}
 .form__button {
 	width: 160px;
 	height: 50px;

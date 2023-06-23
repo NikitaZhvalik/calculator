@@ -17,6 +17,23 @@ const expensesList = document.querySelector("#expenses-list");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
+  //! проверка input на заполненность
+  if (title.value.trim() === '') {
+    title.classList.add('form__input--error');
+    return;
+  } else {
+    title.classList.remove('form__input--error');
+  }
+
+  if (value.value.trim() === '' || +value.value <= 0) {
+    value.classList.add('form__input--error');
+    return;
+  } else {
+    value.classList.remove('form__input--error');
+  }
+
+
+
   //! расчет id
   let id = 1;
   if (budget.length > 0) {
@@ -29,7 +46,7 @@ form.addEventListener("submit", (e) => {
   const record = {
     id: id,
     type: type.value,
-    title: title.value,
+    title: title.value.trim(),
     value: value.value,
   };
 
