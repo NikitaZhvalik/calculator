@@ -40,6 +40,8 @@ function clearForm() {
 
 //! Actions
 insertTestData();
+
+//! Добавление записи доходов/расходов
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -80,38 +82,56 @@ form.addEventListener("submit", (e) => {
   //! отображем запись доходов
   if (record.type === "inc") {
     const html = `
-        <li class="budget-list__item data-id=${record.id} item item--income">
-            <div class="item__title">${record.title}</div>
-            <div class="item__right">
-                <div class="item__amount">${record.value}</div>
-                <button class="item__remove">
-                    <img
-                        src="./img/circle-green.svg"
-                        alt="delete"
-                    />
-                </button>
-            </div>
-            </li>`;
+    <li data-id="${record.id}" class="budget-list__item item item--income">
+        <div class="item__title">${record.title}</div>
+        <div class="item__right">
+            <div class="item__amount">+ ${record.value}</div>
+            <button class="item__remove">
+                <img
+                    src="./img/circle-green.svg"
+                    alt="delete"
+                />
+            </button>
+        </div>
+    </li>`;
     incomesList.insertAdjacentHTML("afterbegin", html);
   }
 
   //! отображем запись расходов
   if (record.type === "exp") {
     const html = `
-                <li class="budget-list__item data-id=${record.id} item item--expense">
-                <div class="item__title">${record.title}</div>
-                <div class="item__right">
-                    <div class="item__amount">
-                        ${record.value}
-                    </div>
-                    <button class="item__remove">
-                        <img src="./img/circle-red.svg" alt="delete" />
-                    </button>
-                </div>
-            </li>`;
+    <li data-id="${record.id}" class="budget-list__item item item--expense">
+        <div class="item__title">${record.title}</div>
+        <div class="item__right">
+            <div class="item__amount">
+                - ${record.value}
+            </div>
+            <button class="item__remove">
+                <img src="./img/circle-red.svg" alt="delete" />
+            </button>
+        </div>
+    </li>`;
     expensesList.insertAdjacentHTML("afterbegin", html);
   }
   //! чистим form после добавления
   clearForm();
   insertTestData();
 });
+
+//! Удаление записи доходов/расходов
+document.body.addEventListener('click', function (e) {
+    if (e.target.closest('button.item__remove')) {
+        const recordElement = e.target.closest('li.budget-list__item');
+        const id = +recordElement.dataset.id;
+        const index = budget.findIndex((element) => {
+            if (id === element.id) {
+                return true;
+            }
+        })
+        //! Удаление записи доходов/расходов из массива
+        budget.splice(index, 1);
+        //! Удаление записи доходов/расходов из рендера
+        recordElement.remove();
+    }
+})
+
