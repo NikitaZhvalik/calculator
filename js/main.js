@@ -11,6 +11,11 @@ const value = document.querySelector("#value");
 const incomesList = document.querySelector("#incomes-list");
 const expensesList = document.querySelector("#expenses-list");
 
+const budgetEl = document.querySelector('#budget');
+const totalIncomeEl = document.querySelector('#total-income');
+const totalExpenseEl = document.querySelector('#total-expense');
+const percentsWrapper = document.querySelector('#expense-percents-wrapper');
+
 //! Function
 function insertTestData() {
     const testData = [
@@ -63,11 +68,20 @@ function calcBudget() {
 
     //! считаем общий бюджет
     let expensePercents = 0;
-    if (totalExpense > 0) {
-        const expensePercents = Math.round((totalExpense * 100) /  totalIncome); 
-        console.log(expensePercents);
+    if (totalIncome) {
+        expensePercents = Math.round((totalExpense * 100) /  totalIncome); 
     }
 
+    budgetEl.innerHTML = totalBudget;
+    totalIncomeEl.innerHTML = totalIncome;
+    totalExpenseEl.innerHTML = totalExpense;
+
+    if (expensePercents) {
+        const html = `<div class="badge">${expensePercents}%</div>`;
+        percentsWrapper.innerHTML = html;
+    } else {
+        percentsWrapper.innerHTML = '';
+    }
 }
 
 //! Actions
