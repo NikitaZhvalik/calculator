@@ -38,8 +38,41 @@ function clearForm() {
     form.reset();
 }
 
+function calcBudget() {
+    //! считаем общий доход
+    const totalIncome = budget.reduce((total, element) => {
+        if (element.type === 'inc') {
+            return total + element.value;
+        } else {
+            return total;
+        }
+    }, 0)
+
+    //! считаем общий расход
+    const totalExpense = budget.reduce((total, element) => {
+        if (element.type === 'exp') {
+            return total + element.value;
+        } else {
+            return total;
+        }
+    }, 0)
+
+    //! считаем общий бюджет
+    const totalBudget = totalIncome - totalExpense;
+    console.log(totalBudget);
+
+    //! считаем общий бюджет
+    let expensePercents = 0;
+    if (totalExpense > 0) {
+        const expensePercents = Math.round((totalExpense * 100) /  totalIncome); 
+        console.log(expensePercents);
+    }
+
+}
+
 //! Actions
 insertTestData();
+calcBudget();
 
 //! Добавление записи доходов/расходов
 form.addEventListener("submit", (e) => {
@@ -73,7 +106,7 @@ form.addEventListener("submit", (e) => {
     id: id,
     type: type.value,
     title: title.value.trim(),
-    value: value.value,
+    value: +value.value,
   };
 
   //! добавляем запись расходов/доходов в массив
@@ -116,6 +149,8 @@ form.addEventListener("submit", (e) => {
   //! чистим form после добавления
   clearForm();
   insertTestData();
+  //! пересчетать бюджет
+  calcBudget();
 });
 
 //! Удаление записи доходов/расходов
@@ -133,5 +168,7 @@ document.body.addEventListener('click', function (e) {
         //! Удаление записи доходов/расходов из рендера
         recordElement.remove();
     }
+    //! пересчетать бюджет
+    calcBudget();
 })
 
