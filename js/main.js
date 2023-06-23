@@ -17,6 +17,12 @@ const totalExpenseEl = document.querySelector('#total-expense');
 const percentsWrapper = document.querySelector('#expense-percents-wrapper');
 
 //! Function
+const priceFormatter = new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+})
+
 function insertTestData() {
     const testData = [
         {type: 'inc', title: 'Основная работа', value: 1000,},
@@ -64,7 +70,6 @@ function calcBudget() {
 
     //! считаем общий бюджет
     const totalBudget = totalIncome - totalExpense;
-    console.log(totalBudget);
 
     //! считаем общий бюджет
     let expensePercents = 0;
@@ -72,9 +77,10 @@ function calcBudget() {
         expensePercents = Math.round((totalExpense * 100) /  totalIncome); 
     }
 
-    budgetEl.innerHTML = totalBudget;
-    totalIncomeEl.innerHTML = totalIncome;
-    totalExpenseEl.innerHTML = totalExpense;
+    //! рендерим доходы, расходы, %, общий бюджет
+    budgetEl.innerHTML = priceFormatter.format(totalBudget);
+    totalIncomeEl.innerHTML = '+ ' + priceFormatter.format(totalIncome);
+    totalExpenseEl.innerHTML = '- ' + priceFormatter.format(totalExpense);
 
     if (expensePercents) {
         const html = `<div class="badge">${expensePercents}%</div>`;
@@ -132,7 +138,7 @@ form.addEventListener("submit", (e) => {
     <li data-id="${record.id}" class="budget-list__item item item--income">
         <div class="item__title">${record.title}</div>
         <div class="item__right">
-            <div class="item__amount">+ ${record.value}</div>
+            <div class="item__amount">+ ${priceFormatter.format(record.value)}</div>
             <button class="item__remove">
                 <img
                     src="./img/circle-green.svg"
@@ -151,7 +157,7 @@ form.addEventListener("submit", (e) => {
         <div class="item__title">${record.title}</div>
         <div class="item__right">
             <div class="item__amount">
-                - ${record.value}
+                - ${priceFormatter.format(record.value)}
             </div>
             <button class="item__remove">
                 <img src="./img/circle-red.svg" alt="delete" />
