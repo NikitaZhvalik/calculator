@@ -16,8 +16,12 @@ const totalIncomeEl = document.querySelector('#total-income');
 const totalExpenseEl = document.querySelector('#total-expense');
 const percentsWrapper = document.querySelector('#expense-percents-wrapper');
 
+const monthEl = document.querySelector('#month');
+const yearEl = document.querySelector('#year');
+
 //! Function
 const priceFormatter = new Intl.NumberFormat('ru-RU', {
+    //! добавление пробелов и знака $ у сумм
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0,
@@ -90,7 +94,21 @@ function calcBudget() {
     }
 }
 
+function displayMonth() {
+    //! добавление в шапку сайта года и месяца
+    const now = new Date();
+    const year = now.getFullYear();
+    const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
+        month: 'long',
+    })
+    const month = timeFormatter.format(now);
+
+    monthEl.innerHTML = month;
+    yearEl.innerHTML = year;
+}
+
 //! Actions
+displayMonth();
 insertTestData();
 calcBudget();
 
