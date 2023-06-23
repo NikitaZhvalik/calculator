@@ -8,6 +8,8 @@ const type = document.querySelector('#type');
 const title = document.querySelector('#title');
 const value = document.querySelector('#value');
 
+const incomesList = document.querySelector('#incomes-list');
+
 //! Actions
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -28,7 +30,27 @@ form.addEventListener('submit', (e) => {
         value: value.value,
     }
 
+    //! добавляем запись расходов/доходов в массив
     budget.push(record);
-    console.log(budget);
+
+    //! отображем запись доходов
+    if (record.type === 'inc') {
+        const html = `
+        <li class="budget-list__item data-id=${record.id } item item--income">
+            <div class="item__title">${record.title}</div>
+            <div class="item__right">
+                <div class="item__amount">${record.value}</div>
+                <button class="item__remove">
+                    <img
+                        src="./img/circle-green.svg"
+                        alt="delete"
+                    />
+                </button>
+            </div>
+            </li>`
+        incomesList.insertAdjacentHTML('afterbegin', html);
+    }
+
 })
+
 
