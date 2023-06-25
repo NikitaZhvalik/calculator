@@ -1,3 +1,5 @@
+import * as view from './view.js';
+
 //! DATA
 const budget = [];
 
@@ -20,12 +22,7 @@ const monthEl = document.querySelector('#month');
 const yearEl = document.querySelector('#year');
 
 //! Function
-const priceFormatter = new Intl.NumberFormat('ru-RU', {
-    //! добавление пробелов и знака $ у сумм
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-})
+
 
 function insertTestData() {
     const testData = [
@@ -82,9 +79,9 @@ function calcBudget() {
     }
 
     //! рендерим доходы, расходы, %, общий бюджет
-    budgetEl.innerHTML = priceFormatter.format(totalBudget);
-    totalIncomeEl.innerHTML = '+ ' + priceFormatter.format(totalIncome);
-    totalExpenseEl.innerHTML = '- ' + priceFormatter.format(totalExpense);
+    budgetEl.innerHTML = view.priceFormatter.format(totalBudget);
+    totalIncomeEl.innerHTML = '+ ' + view.priceFormatter.format(totalIncome);
+    totalExpenseEl.innerHTML = '- ' + view.priceFormatter.format(totalExpense);
 
     if (expensePercents) {
         const html = `<div class="badge">${expensePercents}%</div>`;
@@ -116,20 +113,10 @@ calcBudget();
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  //! проверка input на заполненность
-  if (title.value.trim() === '') {
-    title.classList.add('form__input--error');
-    return;
-  } else {
-    title.classList.remove('form__input--error');
-  }
-
-  if (value.value.trim() === '' || +value.value <= 0) {
-    value.classList.add('form__input--error');
-    return;
-  } else {
-    value.classList.remove('form__input--error');
-  }
+    const checkResult = view.checkEmptyFields();
+    if (checkResult === false) {
+        return;
+    }
 
   //! расчет id
   let id = 1;
@@ -156,7 +143,7 @@ form.addEventListener("submit", (e) => {
     <li data-id="${record.id}" class="budget-list__item item item--income">
         <div class="item__title">${record.title}</div>
         <div class="item__right">
-            <div class="item__amount">+ ${priceFormatter.format(record.value)}</div>
+            <div class="item__amount">+ ${view.priceFormatter.format(record.value)}</div>
             <button class="item__remove">
                 <img
                     src="./img/circle-green.svg"
@@ -175,7 +162,7 @@ form.addEventListener("submit", (e) => {
         <div class="item__title">${record.title}</div>
         <div class="item__right">
             <div class="item__amount">
-                - ${priceFormatter.format(record.value)}
+                - ${view.priceFormatter.format(record.value)}
             </div>
             <button class="item__remove">
                 <img src="./img/circle-red.svg" alt="delete" />
