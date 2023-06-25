@@ -15,7 +15,7 @@ const elements = {
 }
 
 function checkEmptyFields() {
-      //! проверка input на заполненность
+    //! проверка input на заполненность
     if (elements.title.value.trim() === '') {
         elements.title.classList.add('form__input--error');
         return false;
@@ -41,6 +41,54 @@ const priceFormatter = new Intl.NumberFormat('ru-RU', {
     maximumFractionDigits: 0,
 })
 
+function renderRecord(record) {
+    //! отображем запись доходов
+  if (record.type === "inc") {
+    const html = `
+    <li data-id="${record.id}" class="budget-list__item item item--income">
+        <div class="item__title">${record.title}</div>
+        <div class="item__right">
+            <div class="item__amount">+ ${priceFormatter.format(record.value)}</div>
+            <button class="item__remove">
+                <img
+                    src="./img/circle-green.svg"
+                    alt="delete"
+                />
+            </button>
+        </div>
+    </li>`;
+    elements.incomesList.insertAdjacentHTML("afterbegin", html);
+  }
 
+  //! отображем запись расходов
+  if (record.type === "exp") {
+    const html = `
+    <li data-id="${record.id}" class="budget-list__item item item--expense">
+        <div class="item__title">${record.title}</div>
+        <div class="item__right">
+            <div class="item__amount">
+                - ${priceFormatter.format(record.value)}
+            </div>
+            <button class="item__remove">
+                <img src="./img/circle-red.svg" alt="delete" />
+            </button>
+        </div>
+    </li>`;
+    elements.expensesList.insertAdjacentHTML("afterbegin", html);
+  }
+}
 
-export { elements, priceFormatter, checkEmptyFields}
+function renderBudget({totalBudget, totalIncome, totalExpense, expensePercents}) {
+    //! рендерим доходы, расходы, %, общий бюджет
+    elements.budgetEl.innerHTML = priceFormatter.format(totalBudget);
+    elements.totalIncomeEl.innerHTML = '+ ' + priceFormatter.format(totalIncome);
+    elements.totalExpenseEl.innerHTML = '- ' + priceFormatter.format(totalExpense);
+
+    if (expensePercents) {
+        const html = `<div class="badge">${expensePercents}%</div>`;
+        elements.percentsWrapper.innerHTML = html;
+    } else {
+        elements.percentsWrapper.innerHTML = '';
+    }
+}
+export { elements, priceFormatter, checkEmptyFields, renderRecord, renderBudget}

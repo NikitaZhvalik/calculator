@@ -78,17 +78,13 @@ function calcBudget() {
         expensePercents = Math.round((totalExpense * 100) /  totalIncome); 
     }
 
-    //! рендерим доходы, расходы, %, общий бюджет
-    budgetEl.innerHTML = view.priceFormatter.format(totalBudget);
-    totalIncomeEl.innerHTML = '+ ' + view.priceFormatter.format(totalIncome);
-    totalExpenseEl.innerHTML = '- ' + view.priceFormatter.format(totalExpense);
-
-    if (expensePercents) {
-        const html = `<div class="badge">${expensePercents}%</div>`;
-        percentsWrapper.innerHTML = html;
-    } else {
-        percentsWrapper.innerHTML = '';
-    }
+    const budgetSummery = {
+        totalIncome,
+        totalExpense,
+        totalBudget,
+        expensePercents,
+    };
+    view.renderBudget(budgetSummery);
 }
 
 function displayMonth() {
@@ -113,10 +109,7 @@ calcBudget();
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-    const checkResult = view.checkEmptyFields();
-    if (checkResult === false) {
-        return;
-    }
+    if (!view.checkEmptyFields()) return;
 
   //! расчет id
   let id = 1;
@@ -137,40 +130,9 @@ form.addEventListener("submit", (e) => {
   //! добавляем запись расходов/доходов в массив
   budget.push(record);
 
-  //! отображем запись доходов
-  if (record.type === "inc") {
-    const html = `
-    <li data-id="${record.id}" class="budget-list__item item item--income">
-        <div class="item__title">${record.title}</div>
-        <div class="item__right">
-            <div class="item__amount">+ ${view.priceFormatter.format(record.value)}</div>
-            <button class="item__remove">
-                <img
-                    src="./img/circle-green.svg"
-                    alt="delete"
-                />
-            </button>
-        </div>
-    </li>`;
-    incomesList.insertAdjacentHTML("afterbegin", html);
-  }
+  view.renderRecord(record);
 
-  //! отображем запись расходов
-  if (record.type === "exp") {
-    const html = `
-    <li data-id="${record.id}" class="budget-list__item item item--expense">
-        <div class="item__title">${record.title}</div>
-        <div class="item__right">
-            <div class="item__amount">
-                - ${view.priceFormatter.format(record.value)}
-            </div>
-            <button class="item__remove">
-                <img src="./img/circle-red.svg" alt="delete" />
-            </button>
-        </div>
-    </li>`;
-    expensesList.insertAdjacentHTML("afterbegin", html);
-  }
+ 
   //! чистим form после добавления
   clearForm();
   insertTestData();
