@@ -116,5 +116,11 @@ function getFormData() {
     return formData;
 }
 
+function removeRecord(e) {
+    const recordElement = e.target.closest('li.budget-list__item');
+    const id = recordElement.dataset.id;
+    recordElement.remove();
+    return id;
+}
 
-export { elements, priceFormatter, checkEmptyFields, renderRecord, renderBudget, clearForm, renderMonth, renderTestData, getFormData}
+export { elements, priceFormatter, checkEmptyFields, renderRecord, renderBudget, clearForm, renderMonth, renderTestData, getFormData, removeRecord}

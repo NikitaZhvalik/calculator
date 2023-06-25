@@ -1,7 +1,5 @@
+import * as model from './model.js';
 import * as view from './view.js';
-
-//! DATA
-const budget = [];
 
 //! Function
 function insertTestData() {
@@ -74,7 +72,7 @@ function displayMonth() {
 //! Actions
 displayMonth();
 insertTestData();
-calcBudget();
+// calcBudget();
 
 //! Добавление записи доходов/расходов
 view.elements.form.addEventListener("submit", (e) => {
@@ -82,53 +80,25 @@ view.elements.form.addEventListener("submit", (e) => {
 
     if (!view.checkEmptyFields()) return;
 
-  //! расчет id
-  let id = 1;
-  if (budget.length > 0) {
-    const lastElement = budget[budget.length - 1];
-    const lastElId = lastElement.id;
-    id = lastElement.id + 1;
-  }
+    const formData =  view.getFormData();
 
-  const formData =  view.getFormData();
+    const record = model.createRecord(formData);
+    view.renderRecord(record);
 
-  //! формируем запись расхода/дохода
-  const record = {
-    id: id,
-    type: formData.type,
-    title: formData.title.trim(),
-    value: +formData.value,
-  };
-
-  //! добавляем запись расходов/доходов в массив
-  budget.push(record);
-
-  view.renderRecord(record);
-
- 
   //! чистим form после добавления
   view.clearForm();
   insertTestData();
   //! пересчетать бюджет
-  calcBudget();
+//   calcBudget();
 });
 
 //! Удаление записи доходов/расходов
 document.body.addEventListener('click', function (e) {
     if (e.target.closest('button.item__remove')) {
-        const recordElement = e.target.closest('li.budget-list__item');
-        const id = +recordElement.dataset.id;
-        const index = budget.findIndex((element) => {
-            if (id === element.id) {
-                return true;
-            }
-        })
-        //! Удаление записи доходов/расходов из массива
-        budget.splice(index, 1);
-        //! Удаление записи доходов/расходов из рендера
-        recordElement.remove();
+        const id = view.removeRecord(e);
+        model.deleteRecord(id);
     }
     //! пересчетать бюджет
-    calcBudget();
+    // calcBudget();
 })
 
