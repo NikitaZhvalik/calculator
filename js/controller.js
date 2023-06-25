@@ -3,27 +3,7 @@ import * as view from './view.js';
 //! DATA
 const budget = [];
 
-//! DOM
-const form = document.querySelector("#form");
-
-const type = document.querySelector("#type");
-const title = document.querySelector("#title");
-const value = document.querySelector("#value");
-
-const incomesList = document.querySelector("#incomes-list");
-const expensesList = document.querySelector("#expenses-list");
-
-const budgetEl = document.querySelector('#budget');
-const totalIncomeEl = document.querySelector('#total-income');
-const totalExpenseEl = document.querySelector('#total-expense');
-const percentsWrapper = document.querySelector('#expense-percents-wrapper');
-
-const monthEl = document.querySelector('#month');
-const yearEl = document.querySelector('#year');
-
 //! Function
-
-
 function insertTestData() {
     const testData = [
         {type: 'inc', title: 'Основная работа', value: 1000,},
@@ -40,14 +20,7 @@ function insertTestData() {
     }
     const randomIndex = getRandomInt(testData.length);
     const randomData = testData[randomIndex];
-
-    type.value = randomData.type;
-    title.value = randomData.title;
-    value.value = randomData.value;
-}
-
-function clearForm() {
-    form.reset();
+    view.renderTestData(randomData);
 }
 
 function calcBudget() {
@@ -95,9 +68,7 @@ function displayMonth() {
         month: 'long',
     })
     const month = timeFormatter.format(now);
-
-    monthEl.innerHTML = month;
-    yearEl.innerHTML = year;
+    view.renderMonth(month, year);
 }
 
 //! Actions
@@ -106,7 +77,7 @@ insertTestData();
 calcBudget();
 
 //! Добавление записи доходов/расходов
-form.addEventListener("submit", (e) => {
+view.elements.form.addEventListener("submit", (e) => {
   e.preventDefault();
 
     if (!view.checkEmptyFields()) return;
@@ -119,12 +90,14 @@ form.addEventListener("submit", (e) => {
     id = lastElement.id + 1;
   }
 
+  const formData =  view.getFormData();
+
   //! формируем запись расхода/дохода
   const record = {
     id: id,
-    type: type.value,
-    title: title.value.trim(),
-    value: +value.value,
+    type: formData.type,
+    title: formData.title.trim(),
+    value: +formData.value,
   };
 
   //! добавляем запись расходов/доходов в массив
@@ -134,7 +107,7 @@ form.addEventListener("submit", (e) => {
 
  
   //! чистим form после добавления
-  clearForm();
+  view.clearForm();
   insertTestData();
   //! пересчетать бюджет
   calcBudget();

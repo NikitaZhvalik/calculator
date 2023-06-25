@@ -91,4 +91,30 @@ function renderBudget({totalBudget, totalIncome, totalExpense, expensePercents})
         elements.percentsWrapper.innerHTML = '';
     }
 }
-export { elements, priceFormatter, checkEmptyFields, renderRecord, renderBudget}
+
+function clearForm() {
+    elements.form.reset();
+}
+
+function renderMonth(month, year) {
+    elements.monthEl.innerHTML = month;
+    elements.yearEl.innerHTML = year;
+}
+
+function renderTestData(randomData) {
+    elements.type.value = randomData.type;
+    elements.title.value = randomData.title;
+    elements.value.value = randomData.value;
+}
+
+function getFormData() {
+    const formData = {
+        type: elements.type.value,
+        title: elements.title.value,
+        value: elements.value.value,
+    }
+    return formData;
+}
+
+
+export { elements, priceFormatter, checkEmptyFields, renderRecord, renderBudget, clearForm, renderMonth, renderTestData, getFormData}
